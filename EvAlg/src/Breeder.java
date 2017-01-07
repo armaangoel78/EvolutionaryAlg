@@ -9,8 +9,26 @@ public class Breeder {
 		this.crossoverRate = crossoverRate;
 	}
 	
-	public Genome breed(int[] layout, double[][][] data, Genome one, Genome two) {
-		Genome newGenome = new Genome(layout, data);
+	public Genome breed(int[] layout, double[][][] data, Genome one, double amountOfChange, int num) {
+		Genome newGenome = new Genome(layout, data, num);
+		for (int i = 0; i < one.getLayers(); i++) {
+			for (int r = 0; r < one.getLayerSynapseRows(i); r++){
+				for (int c = 0; c < one.getLayerSynapseColumns(i); c++) {
+					if (Math.random() <= crossoverRate) {
+						double w1 = one.getWeight(i, r, c); 
+						double adjustment = (Math.random() * (amountOfChange*2)) - amountOfChange; //change to weight can be between -amountOfChange and +amountOfChange
+						newGenome.changeWeight(i, r, c, w1 + adjustment);
+					}
+				}
+			}
+		}
+		
+		return newGenome;
+	}
+	
+	
+	public Genome breed(int[] layout, double[][][] data, Genome one, Genome two, int num) {
+		Genome newGenome = new Genome(layout, data, num);
 		for (int i = 0; i < one.getLayers(); i++) {
 			for (int r = 0; r < one.getLayerSynapseRows(i); r++){
 				for (int c = 0; c < one.getLayerSynapseColumns(i); c++) {

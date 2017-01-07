@@ -3,8 +3,10 @@ public class Genome {
 	private Layer[] layers;
 	private double[][][] data;
 	private double[][] outputs;
+	private int num;
 
-	public Genome (int[] layout, double[][][] data) {
+	public Genome (int[] layout, double[][][] data, int num) {
+		this.num = num;
 		this.data = data;
 		
 		layers = new Layer[layout.length];
@@ -25,17 +27,34 @@ public class Genome {
 		} 
 	}
 	
-	public int getFitness() {
+	public int getFitnessInt() {
 		run();
-		double netError = 0;
+		double fitness = 0;
 		for (int i = 0; i < outputs.length; i++) {
 			for (int x = 0; x < outputs[i].length; x++) {
-				netError +=  1 - Math.abs(data[i][1][0] - outputs[i][x]);
-				System.out.println(i + " " + x + " " + outputs[i][x]);
+				fitness +=  1 - Math.abs(data[i][1][0] - outputs[i][x]); // 1 - error
 			}
 		}
 		
-		return ((int) netError);
+		return ((int) fitness); 
+	}
+	
+	public double getFitnessRaw() {
+		run();
+		double fitness = 0;
+		for (int i = 0; i < outputs.length; i++) {
+			for (int x = 0; x < outputs[i].length; x++) {
+				fitness +=  1 - Math.abs(data[i][1][0] - outputs[i][x]); // 1 - error
+				//System.out.println(num + " " + i + " " + x + "   " + data[i][1][0] + " " + outputs[i][x] + " " + fitness);
+
+			}
+		}
+		
+		return fitness; 
+	}
+	
+	public double getOutputs(int index) {
+		return outputs[index][0];
 	}
 	
 	public double getWeight(int layer, int r, int c) {
