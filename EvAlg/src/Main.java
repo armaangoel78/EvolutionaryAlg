@@ -2,7 +2,7 @@ import java.util.Random;
 
 public class Main {
 	private static Random r = new Random();
-	private static Genome[] genomes = new Genome[20000];
+	private static Genome[] genomes = new Genome[2000];
 	private static Breeder breeder = new Breeder(.001, .7);
 
 	private static int[] layout = {2, 1};
@@ -24,7 +24,9 @@ public class Main {
 			int index = 0;
 			for (int i = 0; i < best.length; i++) {
 				for (int x = 0; x < genomes.length/best.length; x++) {
-					genomes[index] = breeder.breed(layout, data, genomes[best[i]], .2, index);
+					double adjustment = 1 / (1 + Math.pow(2.7182818284590452353602874713527, -(genomes[best[i]].getFitnessRaw())));
+					adjustment = 1/adjustment;
+					genomes[index] = breeder.breed(layout, data, genomes[best[i]], adjustment, index);
 					index++;
 				}
 			} 
